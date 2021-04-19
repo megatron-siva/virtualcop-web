@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>POLICE</title>
+  <script src="http://maps.google.com/maps/api/js?key=AIzaSyAo_5Dwm4QMTlcDLFlwzvwI3dZxZFUhgAQ"
+          type="text/javascript"></script>
+</head>
+<body>
+  <div id="map" style="width:100%; height:640px;"></div>
+
+  <script type="text/javascript">
+    var locations = [
+      [11.301359, 77.699263,"Erode Taluk Policestation",0],[11.320365,77.676078,"Thindal PoliceStation",0],[11.301359, 77.699169,"Erode Taluk Policestation",0],[11.328287, 77.711119,"Surampatti Policestation",0],[11.327741, 77.725785,"Raliway Policestation",0],[11.337993, 77.728267,"South Traffic Policestation",0],[11.339977, 77.728812,"Erode City Policestation",0],[11.338538, 77.726650,"Central AWPS",0],[11.339459, 77.722559,"Town Policestation Erode",0],[11.340044, 77.717117,"GH Policestation",0],[11.353964, 77.728840,"Karungalpalayam Policestation",0],[11.345486, 77.698459,"Erode North Policestation",0],[11.343855, 77.637148,"Traffic Policestation",0],[11.277646, 77.586567,"Perundhurai Policestation",0],[11.273534, 77.411194,"Kunnathur Policestation",0],[11.429228, 77.561586,"Kavindapadi Policestation",0],[11.404656, 77.669937,"Chittode Policestation",0],[11.448408, 77.683103,"Women's Policestation",0],[11.448420, 77.684567,"Bhavani Policestation",0],[11.441211, 77.693120,"Komarapalayam Policestation",0],[11.363053, 77.747627,"Pallipalayam Policestation",0],[11.338127, 77.726838,"District Superintendent Of Police",0],[11.338082, 77.727122,"Chithambaram Colony Policestation",0],[11.337460, 77.728407,"Police Shorthand Bureau Office",0],[11.360186, 77.322747,"Nambiyar Policestation",0],[11.503762, 77.244541,"Sathiyamangalam Policestation",0]
+
+    ];
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 10,
+      center: new google.maps.LatLng(11.301359, 77.699263),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+
+    for (i = 0; i < locations.length; i++) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+        map: map,
+
+      });
+
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][2]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+    {% if status %}
+    {%for i in data%}
+    marker = new google.maps.Marker({
+        position: new google.maps.LatLng({{i.latitude}}, {{i.longitude}}),
+        map: map,
+        icon:'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+      });
+
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent("{{tittle}}");
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+      {% endfor %}
+      {% endif %}
+  </script>
+</body>
+</html>
